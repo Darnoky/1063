@@ -12,7 +12,11 @@ app.use((req, res, next) => {
     next();
 });
 app.use(express.json());
+// Obtendo os parametros passados pela linha de comando
+var userArgs = process.argv.slice(2);
+// var mongoURL = userArgs[0];
 const PORT = process.env.PORT || 3000;
+const MONGO_URL = process.env.MONGO_URL || userArgs[0];
 
 const routes = require('./routes/routes');
 app.use('/api', routes);
@@ -20,12 +24,9 @@ app.use('/api', routes);
 app.listen(PORT, () => {
     console.log(`Server Started at ${PORT}`)
 })
-// Obtendo os parametros passados pela linha de comando
-var userArgs = process.argv.slice(2);
-var mongoURL = userArgs[0];
 //Configurando a conexao com o Banco de Dados
 var mongoose = require('mongoose');
-mongoose.connect(mongoURL, {
+mongoose.connect(MONGO_URL, {
     useNewUrlParser: true, useUnifiedTopology:
         true
 });
